@@ -1,101 +1,138 @@
-import React, { useEffect, useState } from 'react'
-import logo from "../../assets/image/logo.png"
-import {Link} from "react-router-dom"
-import {Search, Bell, User, ChevronDown} from "lucide-react"
-import styles from "./Header.module.css"
+/* T-07/T-08: Build the Netflix header here. */
 
+import React, { useEffect } from "react";
+import Styles from "./Header.module.css";
+
+import logo from "../../assets/image/logo.png";
+
+import { Link } from "react-router-dom";
+
+import { useState } from "react";
+
+import {
+  createLucideIcon,
+  Search,
+  Bell,
+  User,
+  ChevronDown,
+} from "lucide-react";
 
 function Header() {
-  let [isSearchOpen, setIsSearchOpen] = useState(false);
-  let [isProfileOpen, setIsProfileOpen]= useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  let [isScrolled, setIsScrolled] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  useEffect( ()=>{
-    let handleScroll= ()=>{
-      if(window.scrollY > 50){
-        setIsScrolled(true)
-      }else{
-        setIsScrolled(false)
+  // for navbar blur effect
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
       }
+    };
 
-      window.addEventListener('scroll', handleScroll)
-      return()=>{
-        window.removeEventListener("scroll", handleScroll)
-      }
-    }
-  }, [])
- 
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  });
 
   return (
-    <header className={`${styles.header} ${isScrolled? styles.scrolled: ""}`}>
-        <div className={styles.container}>
-            {/* logo */}
-            <img src={logo} className={styles.logo} alt="netflix-logo" />
+  <header
+    className={`${Styles.header} ${
+      isScrolled ? Styles.scrolled : ""
+    }`}
+  >
+    {/* logo and nav links */}
+    <div className={Styles.container}>
+      {/* logo */}
+      <img className={Styles.logo} src={logo} alt="" />
 
-            {/* {nav-links} */}
-            <nav className={styles.nav}>
-                <Link className={styles.navLink} href="">Home</Link>
-                <Link className={styles.navLink} href="">Tv show</Link>
-                <Link className={styles.navLink} href="">Movies</Link>
-                <Link className={styles.navLink} href="">New & Popukar</Link>
-                <Link className={styles.navLink} href="">My List</Link>
-                <Link className={styles.navLink} href="">Browse by Language</Link>
-            </nav>
+      {/* nav links */}
+      <nav className={Styles.nav}>
+        <Link className={Styles.navLink} to="/">
+          Home
+        </Link>
 
-            {/* right-side links */}
-            <div className={styles.rightSection}>
-                {/* search */}
-                <div className={styles.searchContainer}>
-                  <button 
-                  className={styles.searchButton}
-                  onClick={()=>{setIsSearchOpen(!isSearchOpen)}}
-                  >
-                     <Search size={20}/>
-                  </button>
+        <Link className={Styles.navLink} to="/">
+          TV Shows
+        </Link>
 
-                  {isSearchOpen && (
-                    <input type="text" placeholder='movie title' className={styles.searchInput} />
-                  )}
-                </div>
+        <Link className={Styles.navLink} to="/">
+          Movies
+        </Link>
 
-                {/* notification */}
-                <button className={styles.iconButton}>
-                  <Bell/>
-                  <span className={styles.notificationBadge}>4</span>
-                </button>
-                
+        <Link className={Styles.navLink} to="/">
+          New & Popular
+        </Link>
 
-                {/* profile */}
-                <div className={styles.profileContainer}>
-                  <button className={styles.profileButton}
-                  onClick={()=>{setIsProfileOpen(!isProfileOpen)}}
-                  >
-                     <div className={styles.profileAvator}>
-                      {/* user-icon */}
-                     <User/>
-                     </div>
+        <Link className={Styles.navLink} to="/">
+          My List
+        </Link>
 
-                      {/* drop-downicon */}
-                     <ChevronDown size={20}/>
-                     
-                  </button>
+        <Link className={Styles.navLink} to="/">
+          Browse by Language
+        </Link>
+      </nav>
 
-                  {isProfileOpen && (
-                    <div className={styles.profileMenu}>
-                      <Link className={styles.profileMenuItem}>account</Link>
-                      <Link className={styles.profileMenuItem}>Help center</Link>
-                      <hr className={styles.profileMenuDivider}/>
-                      <button className={styles.profileMenuItem}>signOut</button>
-                    </div>
-                  )}
-                 
-                </div>
+      {/* right side section */}
+      <div className={Styles.rightSection}>
+        {/* search and notification icon */}
+        <div className={Styles.searchContainer}>
+          <button
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            className={Styles.searchButton}
+          >
+            <Search size={20} />
+          </button>
 
-            </div>
+          {isSearchOpen && (
+            <input
+              type="text"
+              placeholder="movie title"
+              className={Styles.searchInput}
+            />
+          )}
         </div>
-    </header>
-  )
+
+        <button className={Styles.iconButton}>
+          <Bell size={20} />
+          <span className={Styles.notificationBadge}>4</span>
+        </button>
+
+        {/* profile icon */}
+        <div className={Styles.profileContainer}>
+          <button
+            onClick={() => setIsProfileOpen(!isProfileOpen)}
+            className={Styles.profileButton}
+          >
+            <div className={Styles.profileAvatar}>
+              <User size={20} />
+            </div>
+
+            <ChevronDown size={20} />
+          </button>
+
+          {isProfileOpen && (
+            <div className={Styles.profileMenu}>
+              <Link className={Styles.profileMenuItem}>Account</Link>
+
+              <Link className={Styles.profileMenuItem}>Help Center</Link>
+
+              <hr className={Styles.profileMenuDivider} />
+
+              <button className={Styles.profileMenuItem}>
+                Sign Out
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </header>
+  );
 }
 
-export default Header
+export default Header;
